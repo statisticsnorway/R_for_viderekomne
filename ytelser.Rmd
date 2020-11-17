@@ -1,0 +1,62 @@
+---
+title: "Velferdsytelser"
+author: "Susie Jentoft"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduksjon
+Dette dokumentet gir et bilde av velferdsytelser for Norge i 2017.
+
+## Formål og historie
+Hovedhensikten med statistikken Velferdsytelser: arbeid og stønadsmottak er å beskrive utviklingstrekk mellom fire ulike velferdsytelser og arbeidsmarkedet. De fire velferdsytelsene er økonomisk sosialhjelp, arbeidsavklaringspenger, uføretrygd og sykepenger. Data om ytelsene er hentet fra NAV og KOSTRA, og vi har koblet på ulike kjennetegn ved mottakerne. For ytelsen uføretrygd ser vi primært på hvordan relasjonen til arbeidsmarkedet var før mottak av uføretrygd, mens vi for de tre andre ytelsene følger mottakerne i tiden etter selve mottaket.
+
+## Produksjon
+Statistikken basert på register og bygger primært på data fra FD-trygd (http://www.ssb.no/fd-trygd). FD-trygd er en forløpsdatabase der hendelser (for de forskjellige områdene som ligger i FD-Trygd) er datert, som et minimum med start- og stoppdato, og ofte en endringsdato. 
+
+Total ytelser $Y_k$, for hver kommune, $k$, er beregnet som
+$$
+Y_{k}= \sum_{i=1}^n y_i
+$$
+hvor $i$ er type ytelse.
+
+# Ytelser per fylke
+Følgende tabel vises ytelser per fylke for 2017.
+
+```{r echo = F, message = F}
+library(tidyverse)
+library(knitr)
+ytelser <- read_csv2("./data/ytelser.csv")
+
+ytelser_tab <- ytelser %>%
+    mutate(fylke = substr(fylke_nr_navn, 1, 2)) %>%
+    group_by(fylke) %>%
+    filter(aar == 2017) %>%
+    summarise(total_utbetalt = sum(utbetalt_mill_kr))
+    #select(fylke, stoenadsomraade, utbetalt_mill_kr)
+
+kable(ytelser_tab)
+```
+
+Fra tabellen ser vi at for Oslo (fylke = 03), var det utbetalt  `r ytelser_tab$total_utbetalt[ytelser_tab$fylke == "03"]` million kr. 
+
+# Utbetalt ytelser gjennom tid i Oslo, Akershus og Østfold
+
+Følgende figur viser utbetalt ytelser i 2014 til 2017 for tre fylker: Østfold (01), Akershus (02) og Oslo (03).
+
+```{r echo=F }
+ytelser %>% 
+  mutate(fylke = substr(fylke_nr_navn, 1, 2)) %>%
+  filter(fylke %in% c("01","02","03")) %>%
+  group_by(aar, fylke) %>% 
+  summarise(ytelser = sum(utbetalt_mill_kr)/1000) %>% 
+  ggplot(aes(x = aar, y = ytelser, group = fylke)) + 
+  geom_line(aes(color = fylke)) +
+  xlab("år") +
+  ylab("utbetalt ytelser (milliarder)") 
+
+```
+
