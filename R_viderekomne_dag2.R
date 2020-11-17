@@ -39,12 +39,12 @@ lage_fylke2 <- function(kommunenr, sjekk_lengde){
   fylke
 }
 
-lage_fylke2(kommunenr ="301", sjekk_lengde = T)
+lage_fylke2(kommunenr = "301", sjekk_lengde = T)
 lage_fylke2("301", sjekk_lengde = F)
 
 
 
-#### Funkjson med parameter ####
+#### Funksjon med default parameter ####
 lage_fylke3 <- function(kommunenr, sjekk_lengde = T){
   if(sjekk_lengde == T){
     kommunenr <- ifelse(nchar(kommunenr) == 3, 
@@ -55,11 +55,13 @@ lage_fylke3 <- function(kommunenr, sjekk_lengde = T){
   fylke
 }
 lage_fylke3(kommunenr ="301")
+lage_fylke3(kommunenr ="301", sjekk_lengde = F)
+
+
 
 
 
 #### kontroll i funksjoner ####
-
 lage_fylke4 <- function(kommunenr){
   if (nchar(kommunenr) <= 2){
     stop("Kommune nummer var ikke gjeldig. Det bør være lengde 4")
@@ -74,6 +76,8 @@ lage_fylke4 <- function(kommunenr){
 lage_fylke4(kommunenr = "03")
 lage_fylke4(kommunenr = "301")
 lage_fylke4(kommunenr = "0301")
+lage_fylke4(kommunenr = c("0301","3401")) # varsel
+
 
 
 
@@ -93,25 +97,47 @@ x
 
 
 
+
 #### Kombinere funksjoner med tidyverse ####
 
 # Datasett med komma skilletegn
 library(tidyverse)
-inntektdata <- read_csv("H:/R/r-grunnkurs/data/kommunedata.csv")
-View(inntektdata)
+ytelser <- read_csv2("./data/ytelser.csv")
+View(ytelser)
 
-# lage datasett med kommunenivå
-inntektdata <- inntektdata %>%
-  filter(nchar(region) == 4)
-
-
-lage_fylke <- function(kommunenr){
-  substr(kommunenr, 1, 2)
-}
 
 # lage variabel for fylke
-inntektdata <- inntektdata %>%
-  mutate(fylke = lage_fylke(region))
-View(inntektdata)
+ytelser <- ytelser %>%
+  mutate(fylke = lage_fylke(fylke_nr_navn))
+View(ytelser)
+
+
+
+
+
+
+
+
+
+
+
+
+
+##################################################################################
+# DAG 2: Del 2
+
+#### klassR ####
+# Søk i klass
+library(klassR)
+SearchKlass("yrke")
+SearchKlass("yrke", codelists = T)
+
+# Hent ut klassifikasjoner for yrke
+yrke <- GetKlass(7)
+View(yrke)
+
+yrke_vektor <- c("1213", "0110")
+ApplyKlass(yrke_vektor, 7)
+ApplyKlass(yrke_vektor, 7, language = "en")
 
 
