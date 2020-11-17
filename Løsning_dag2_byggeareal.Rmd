@@ -1,0 +1,37 @@
+---
+title: "Byggeareal"
+author: "Susie Jentoft"
+output: pdf_document
+---
+
+```{r setup, include=FALSE, message = F}
+library(tidyverse)
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Byggeareal
+Denne rapporten oppsummere bruksareal fullførte boliger (m$^2$) for 2019. Det er baserte på *Statbank* tabellen <https://www.ssb.no/statbank/table/05940>
+
+Følgende tabell vise Bruksareal fullførte boliger i 2019 etter fylke.
+```{r echo = F, message=F}
+bolig <- read_csv2("./data/bolig.csv")
+areal <- bolig %>% 
+  group_by(fylke) %>%
+  summarise(total_byggeareal = sum(byggeareal))
+kable(areal)
+  
+```
+
+
+Her er en figur
+
+
+```{r echo = F}
+bolig %>%
+  group_by(byggetype) %>%
+  summarise(total_byggeareal = sum(byggeareal)) %>%
+  ggplot(aes(x = byggetype, y = total_byggeareal)) + 
+    geom_bar(stat="identity")
+```
+
