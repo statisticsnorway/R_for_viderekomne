@@ -14,12 +14,13 @@ byggtype <- c("Enebolig", "Våningshus", "Rekkehus", "Terrassehus")
 
 
 
-# 3) Endre "Rekkehus" i vektoren til "Andre bolig"
+
+# 3) Bruk match for å finne indeks til "Rekkehus" i vektoren
 
 
 
 
-# 4) bruk match for å finne indeks til "Rekkehus" i vektoren
+# 4) Endre "Rekkehus" i vektoren til "Andre bolig"
 
 
 
