@@ -10,15 +10,19 @@ byggtype[c(3, 4)]
 
 # 2) Bruk indeks for å plukke ut alle bortsett fra element 4
 byggtype[-4]
+byggtype[1:3]
 
-
-# 3) Endre "Rekkehus" i vektoren til "Andre bolig"
-byggtype["Rekkehus"] <- "Andre bolig"
-
-
-
-# 4) bruk match for å finne indeks til "Rekkehus" i vektoren
+# 3) bruk match for å finne indeks til "Rekkehus" i vektoren
 match("Rekkehus", byggtype)
+
+
+
+# 4) Endre "Rekkehus" i vektoren til "Andre bolig"
+byggtype["Rekkehus"] <- "Andre bolig"
+byggtype[3] <- "Andre bolig"
+
+
+
 
 
 # 5) Lage en liste med vektoren byggtype (som brukt ovenfor) og bygningskodene 111, 113, 159, 135
@@ -32,12 +36,16 @@ bygge$byggkode[3]
 
 
 # 7) Endre listen til en tibble (datasett type i tidyverse)
+library(tidyverse)
 bygge <- as_tibble(bygge)
-
+bygge
 
 
 # 8) Bruk indekser for å plukke ut element som er på rad 2 i kolonn 1
+bygge$byggtype[2]
 bygge[2, 1]
+
+
 
 
 
