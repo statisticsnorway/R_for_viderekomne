@@ -1,4 +1,4 @@
-# Løsningsforslag for R for viderekomne
+# R for viderekomne
 #### DAG 2: Øvelse 3 ####
 
 # 1) Lage en funksjon med en parameter. Parameter skal være koden for byggetype. 
